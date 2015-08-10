@@ -1,0 +1,104 @@
+{% load staticfiles %}
+{% load customfilters %}
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <meta name="robots" content="NONE,NOARCHIVE" />
+    <!-- Bootstrap core CSS -->
+    <link href="{% static "bootstrap/css/bootstrap.min.css" %}" rel="stylesheet">
+    <!-- Bootstrap theme -->
+    <link href="{% static "bootstrap/css/bootstrap-theme.min.css" %}" rel="stylesheet">
+    <!-- Specific to this page -->
+    <link href="{% static "bootstrap/css/theme.css" %}" rel="stylesheet">
+    <style type="text/css">
+      .table-nonfluid {
+         width: auto !important;
+      }
+      td {
+        min-width: 100px;
+      }
+    </style>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="{% static "bootstrap/js/bootstrap.min.js" %}"></script>
+    <!--[if lte IE 7]><link rel="stylesheet" type="text/css" href="/static/admin/css/ie.css" /><![endif]-->
+    <script type="text/javascript">window.__admin_media_prefix__ = "/static/app/";</script>
+    {% block extrastyle %}{% endblock %}
+    {% block extrahead %}{% endblock %}
+    <title>{% block title %}Spearmint App{% endblock %}</title>
+  </head>
+
+  <body role="document">
+
+    <!-- Fixed navbar -->
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#">Spearmint app</a>
+        </div>
+
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li class="active"><a href="{% url 'app:index' %}">Home</a></li>
+
+            {% if user.is_authenticated %}
+              <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Your Experiments<span class="caret"></span></a>
+                <ul class="dropdown-menu">
+                  {% for name in request.session.exp_names %}
+                    <li><a href="{% url 'app:show' name %}">{{ name }}</a></li>
+                  {% endfor %}
+                </ul>
+              </li>
+              <li><a href="{% url 'app:token' %}">Token</a></li>
+            {% else %}
+              <li><a href="{% url 'app:signup' %}">Sign up</a></li>
+            {% endif %}
+          </ul>
+          <!-- sign in form -->
+          {% if user.is_authenticated %}
+            <form class="navbar-form navbar-right" action="{% url 'app:logout' %}">
+              <button type="submit" class="btn btn-success">Sign out</button>
+            </form>
+            <ul class="nav navbar-nav navbar-right">
+              <li><a href="#">{{ user.username }}</a></li>
+            </ul>
+          {% else %}
+            <form class="navbar-form navbar-right" action="{% url 'app:login' %}" method="POST">{% csrf_token %}
+              <div class="form-group">
+                <input type="text" name="username" placeholder="Username or Email" class="form-control">
+              </div>
+              <div class="form-group">
+                <input type="password" name="password" placeholder="Password" class="form-control">
+              </div>
+              <button type="submit" class="btn btn-success">Sign in</button>
+            </form>
+          {% endif %}
+        </div><!--/.nav-collapse -->
+      </div>
+    </nav>
+
+    <div class="container theme-showcase" role="main">
+      {% if message %}
+        <div>
+          <h3>{{ message }}</h3>
+        </div>
+      {% endif %}
+
+      {% block content %}{% endblock %}
+    </div>
+
+  </body>
+</html>

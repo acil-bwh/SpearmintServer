@@ -1,0 +1,35 @@
+{% extends "app/base.html" %}
+
+{% load staticfiles %}
+{% load customfilters %}
+
+{% block title %}Create Account{% endblock %}
+
+{% block extrastyle %}{{ block.super }}
+    <link href="{% static "css/signin.css" %}" rel="stylesheet" type="text/css"/>
+{% endblock %}
+
+{% block content %}
+
+<div>
+
+    <form class="form-signin" action="{% url 'app:signup' %}" method="post">{% csrf_token %}
+
+        <h2 class="form-signin-heading">Create Account</h2>
+
+        {% for field in signup_form %}
+            {{ field | decorate }}
+            {{ field.errors }}
+        {% endfor %}
+
+        <script type="text/javascript">document.getElementById("id_username").focus();</script>
+
+        <p></p>
+        <button class="btn btn-lg btn-primary btn-block" type="submit">Sign up</button>
+
+
+    </form>
+
+</div>
+
+{% endblock %}

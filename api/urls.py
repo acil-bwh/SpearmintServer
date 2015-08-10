@@ -1,0 +1,13 @@
+from django.conf.urls import patterns, include, url
+from api import views
+
+urlpatterns = patterns('',
+    url(r'^$', views.index, name='index'),
+    url(r'^find_experiment/$', views.find_experiment, name='find_experiment'),
+    url(r'^find_all_experiments/$', views.find_all_experiments, name='find_all_experiments'),
+    url(r'^create_experiment/$', views.create_experiment, name='create_experiment'),
+    url(r'^delete_experiment/$', views.delete_experiment, name='delete_experiment'),
+    url(r'^get_suggestion/$', views.get_suggestion, name='get_suggestion'),
+    url(r'^post_update/$', views.post_update, name='post_update'),
+    url(r'^find_jobs/$', views.find_jobs, name='find_jobs'),
+)
