@@ -10,6 +10,6 @@ urlpatterns = patterns('',
 
     url(r'^admin/', include(admin.site.urls)),
     url(r'^o/', include('oauth2_provider.urls', namespace='oauth2_provider')),
-    url(r'^api/', include('api.urls', namespace='api')),
-    url(r'^app/', include('app.urls', namespace='app')),
+    url(r'^api/', include('SpearmintServer.api.urls', namespace='api')),
+    url(r'^app/', include('SpearmintServer.app.urls', namespace='app')),
 )
