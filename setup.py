@@ -21,4 +21,9 @@ setup(name='SpearmintServer',
                 'SpearmintServer.api',
                ],
       package_data={'SpearmintServer.app': app_data_files},
+      install_requires=['Django==1.6.0',
+                        'South==0.8.4',
+                        'MySQL-Python==1.2.5',
+                        'python-dateutil>=1.5'
+                       ],
      )
