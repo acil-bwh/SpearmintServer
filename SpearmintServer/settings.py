@@ -10,14 +10,35 @@ https://docs.djangoproject.com/en/1.6/ref/settings/
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
+import json
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
+# JSON-based secrets module
+with open(os.path.join(os.path.dirname(__file__),'secrets.json')) as f:
+    secrets = json.loads(f.read())
+
+def get_env_variable(var_name):
+    """Get the environment variable or return exception."""
+    try:
+        return os.environ[var_name]
+    except KeyError:
+        error_msg = "Set the %s environment variable." % var_name
+        raise ImproperlyConfigured(error_msg)
+
+# alternative way to get secret info from JSON file instead of env variable
+def get_secret(setting, secrets=secrets):
+    """Get the secret variable or return explicit exception."""
+    try:
+        return secrets[setting]
+    except KeyError:
+        error_msg = "Set the %s environment variable." % setting
+        raise ImproperlyConfigured(error_msg)
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.6/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '8*89z+$nst9&m7hlz_adbj1+j29w_zzv0&f*a6-7(o5hd8gqjs'
+SECRET_KEY = get_secret('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -58,8 +79,8 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'oauth2_provider',
     'corsheaders',
-    'api',
-    'app',
+    'SpearmintServer.api',
+    'SpearmintServer.app',
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = (
@@ -97,11 +118,22 @@ OAUTH2_PROVIDER = {
 # Database
 # https://docs.djangoproject.com/en/1.6/ref/settings/#databases
 
+#DATABASES = {
+#    'default': {
+#        'ENGINE': 'django.db.backends.sqlite3',
+#        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+#    }
+#}
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'spearmintdb',
+        'HOST': 'acildb.cmp1fkft9hba.us-west-2.rds.amazonaws.com',
+        'PORT': '3306',
+        'USER': 'acil_user',
+        'PASSWORD': get_secret('DATABASE_PASSWORD'),
+    },
 }
 
 # Internationalization

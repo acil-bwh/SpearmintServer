@@ -24,6 +24,8 @@ setup(name='SpearmintServer',
       install_requires=['Django==1.6.0',
                         'South==0.8.4',
                         'MySQL-Python==1.2.5',
-                        'python-dateutil>=1.5'
+                        'python-dateutil>=1.5',
+                        'django-oauth-toolkit==0.9.0',
+                        'django-cors-headers==1.1.0',
                        ],
      )
