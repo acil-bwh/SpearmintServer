@@ -114,6 +114,7 @@ def get_suggestion(request):
             if verbose:
                 print '--- been waiting {0} sec for job_id = {1}'.format(total_elapsed, job_id)
             if total_elapsed > time_limit:
+                queue.dequeue(job_id)
                 raise Exception('timed out while getting suggestion')
 
 @csrf_exempt
