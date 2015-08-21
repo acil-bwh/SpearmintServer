@@ -57,3 +57,7 @@ docs/_build/
 target/
 
 app/static/bootstrap/
+
+*.sqlite3
+
+SpearmintServer/secrets.json
