@@ -123,8 +123,9 @@ def get_suggestion(request):
 def post_update(request):
     data = json.loads(request.body)
     name = data['name']
-    username = request.user.username
+    param_values = data['param_values']
     outcome_val = data['outcome_val']
-    spearmint.post_update(username, name, outcome_val)
+    username = request.user.username
+    spearmint.post_update(username, name, param_values, outcome_val)
     response_data = {'name': name}
     return response_data
