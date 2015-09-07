@@ -11,7 +11,7 @@ for l in app_data_dir:
 
 setup(name='SpearmintServer',
       description='Spearmint Django application',
-      version='0.9.2',
+      version='0.9.3',
       author='J. Lee',
       author_email='jinho89@gmail.com',
       #package_dir={'': 'SpearmintServer'},

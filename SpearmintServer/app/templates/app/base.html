@@ -55,7 +55,7 @@
 
             {% if user.is_authenticated %}
               <li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Your Experiments<span class="caret"></span></a>
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">My Experiments<span class="caret"></span></a>
                 <ul class="dropdown-menu">
                   {% for name in request.session.exp_names %}
                     <li><a href="{% url 'app:show' name %}">{{ name }}</a></li>

@@ -39,7 +39,7 @@ def create_experiment(request):
     outcome = data['outcome']
     username = request.user.username
     spearmint.create_experiment(username, name, parameters, outcome)
-    response_data = {'name': name}
+    response_data = {'name': name, 'username': username}
     return response_data
 
 @login_required
@@ -48,7 +48,7 @@ def find_experiment(request):
     name = request.GET['name']
     username = request.user.username
     found = spearmint.find_experiment(username, name)
-    response_data = {'name': name, 'result': found}
+    response_data = {'name': name, 'result': found, 'username': username}
     return response_data
 
 @login_required
