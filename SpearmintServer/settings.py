@@ -126,14 +126,14 @@ DATABASES_DEV = {
 }
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'spearmintdb',
-        'HOST': 'acildb.cmp1fkft9hba.us-west-2.rds.amazonaws.com',
-        'PORT': '3306',
-        'USER': 'acil_user',
-        'PASSWORD': get_secret('DATABASE_PASSWORD'),
-    },
+  'default': {
+    'ENGINE': 'django.db.backends.mysql',
+    'NAME': 'spearmintdb',
+    'HOST': 'localhost',
+    'PORT': '3306',
+    'USER': ‘acil-user',
+    'PASSWORD': get_secret('DATABASE_PASSWORD'),
+  },
 }
 
 # Internationalization
