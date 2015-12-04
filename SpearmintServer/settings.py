@@ -131,7 +131,7 @@ DATABASES = {
     'NAME': 'spearmintdb',
     'HOST': 'localhost',
     'PORT': '3306',
-    'USER': ‘acil-user',
+    'USER': 'acil-user',
     'PASSWORD': get_secret('DATABASE_PASSWORD'),
   },
 }
