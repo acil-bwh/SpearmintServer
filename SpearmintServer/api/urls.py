@@ -10,4 +10,5 @@ urlpatterns = patterns('',
     url(r'^get_suggestion/$', views.get_suggestion, name='get_suggestion'),
     url(r'^post_update/$', views.post_update, name='post_update'),
     url(r'^find_jobs/$', views.find_jobs, name='find_jobs'),
+    url(r'^get_mongodb_uri/$', views.get_mongodb_uri, name='get_mongodb_uri'),
 )

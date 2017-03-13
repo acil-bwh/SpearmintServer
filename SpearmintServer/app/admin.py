@@ -4,7 +4,7 @@ from django.contrib.auth.models import Group
 from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.forms import ReadOnlyPasswordHashField
 
-from SpearmintServer.app.models import User
+from SpearmintServer.app.models import User, MongoDB
 
 # ------------------------------------------------------------------------------
 #
@@ -152,3 +152,8 @@ class PasswordChangeForm(SetPasswordForm):
         return old_password
 
 admin.site.register(User, MyUserAdmin)
+
+class MongoAdmin(admin.ModelAdmin):
+    pass
+
+admin.site.register(MongoDB,MongoAdmin)

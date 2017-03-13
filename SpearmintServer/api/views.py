@@ -3,10 +3,12 @@ from django.http import HttpRequest, HttpResponse, HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
 from . import queue
+from SpearmintServer.app.models import MongoDB
 
 import spearmint
 import json
 import time
+
 
 # Spearmint web API set
 
@@ -27,6 +29,18 @@ def error_check(api):
         return json_response(response)
     return error_checked
 
+
+def get_db_uri():
+    datum=MongoDB.objects.get(pk=1)
+    db_uri = 'mongodb://' + datum.username + ':' + datum.password + '@' + datum.db_address + '/spearmint'
+    return db_uri
+
+
+def get_db_address():
+    datum=MongoDB.objects.get(pk=1)
+    db_address = datum.db_address
+    return db_address
+
 @csrf_exempt
 @login_required
 @error_check
@@ -38,7 +52,8 @@ def create_experiment(request):
     parameters = data['parameters']
     outcome = data['outcome']
     username = request.user.username
-    spearmint.create_experiment(username, name, parameters, outcome)
+    db_uri = get_db_uri()
+    spearmint.create_experiment(username, name, parameters, outcome, db_uri)
     response_data = {'name': name, 'username': username}
     return response_data
 
@@ -47,7 +62,8 @@ def create_experiment(request):
 def find_experiment(request):
     name = request.GET['name']
     username = request.user.username
-    found = spearmint.find_experiment(username, name)
+    db_uri = get_db_uri()
+    found = spearmint.find_experiment(username, name, db_uri)
     response_data = {'name': name, 'result': found, 'username': username}
     return response_data
 
@@ -56,15 +72,24 @@ def find_experiment(request):
 def find_jobs(request):
     name = request.GET['name']
     username = request.user.username
-    jobs = spearmint.find_jobs(username, name)
+    db_uri = get_db_uri()
+    jobs = spearmint.find_jobs(username, name, db_uri)
     response_data = {'name': name, 'jobs': jobs}
+    return response_data
+
+@login_required
+@error_check
+def get_mongodb_uri(request):
+    db_uri = get_db_uri()
+    response_data = {'db_uri': db_uri}
     return response_data
 
 @login_required
 @error_check
 def find_all_experiments(request):
     username = request.user.username
-    names = spearmint.find_all_experiments(username)
+    db_uri = get_db_uri()
+    names = spearmint.find_all_experiments(username, db_uri)
     response_data = {'names': names}
     return response_data
 
@@ -74,7 +99,8 @@ def find_all_experiments(request):
 def delete_experiment(request):
     name = request.POST['name']
     username = request.user.username
-    deleted = spearmint.delete_experiment(username, name)
+    db_uri = get_db_uri()
+    deleted = spearmint.delete_experiment(username, name, db_uri)
     response_data = {'name': name, 'result': deleted}
     return response_data
 
@@ -83,6 +109,7 @@ def delete_experiment(request):
 def get_suggestion(request):
     name = request.GET['name']
     username = request.user.username
+    db_uri = get_db_uri()
     verbose = True
 
     # use queue for concurrency control
@@ -96,7 +123,7 @@ def get_suggestion(request):
     while True:
         if queue.peek(job_id, upto_first_n=1):
             start_time = time.time()
-            params = spearmint.get_suggestion(username, name)
+            params = spearmint.get_suggestion(username, name, db_uri)
             elapsed_time = time.time() - start_time
             if verbose:
                 print '*** took {0} sec. to get suggestion.'.format(elapsed_time)
@@ -126,6 +153,6 @@ def post_update(request):
     param_values = data['param_values']
     outcome_val = data['outcome_val']
     username = request.user.username
-    spearmint.post_update(username, name, param_values, outcome_val)
+    spearmint.post_update(username, name, param_values, outcome_val, get_db_uri())
     response_data = {'name': name}
     return response_data

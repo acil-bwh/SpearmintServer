@@ -118,23 +118,23 @@ OAUTH2_PROVIDER = {
 # Database
 # https://docs.djangoproject.com/en/1.6/ref/settings/#databases
 
-DATABASES_DEV = {
+DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
 
-DATABASES = {
-  'default': {
-    'ENGINE': 'django.db.backends.mysql',
-    'NAME': 'spearmintdb',
-    'HOST': 'localhost',
-    'PORT': '3306',
-    'USER': 'acil-user',
-    'PASSWORD': get_secret('DATABASE_PASSWORD'),
-  },
-}
+# DATABASES = {
+#   'default': {
+#     'ENGINE': 'django.db.backends.mysql',
+#     'NAME': 'spearmintdb',
+#     'HOST': 'localhost',
+#     'PORT': '3306',
+#     'USER': 'acil-user',
+#     'PASSWORD': get_secret('DATABASE_PASSWORD'),
+#   },
+# }
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.6/topics/i18n/

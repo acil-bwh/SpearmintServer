@@ -114,3 +114,9 @@ class User(AbstractBaseUser):
         "Is the user a member of staff?"
         # Simplest possible answer: All admins are staff
         return self.is_admin
+
+class MongoDB(models.Model):
+    db_address = models.CharField(max_length=20, default='54.196.103.16')
+    username = models.CharField(max_length=20,default='user-mongo')
+    password = models.CharField(max_length=20, default='acil17')
+
