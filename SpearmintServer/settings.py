@@ -118,23 +118,23 @@ OAUTH2_PROVIDER = {
 # Database
 # https://docs.djangoproject.com/en/1.6/ref/settings/#databases
 
-DATABASES = {
+DATABASES_DEV = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
 
-# DATABASES = {
-#   'default': {
-#     'ENGINE': 'django.db.backends.mysql',
-#     'NAME': 'spearmintdb',
-#     'HOST': 'localhost',
-#     'PORT': '3306',
-#     'USER': 'acil-user',
-#     'PASSWORD': get_secret('DATABASE_PASSWORD'),
-#   },
-# }
+DATABASES = {
+  'default': {
+    'ENGINE': 'django.db.backends.mysql',
+    'NAME': 'spearmintdb',
+    'HOST': 'spearmintdb',
+    'PORT': '3306',
+    'USER': 'acil-user',
+    'PASSWORD': get_secret('DATABASE_PASSWORD'),
+  },
+}
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.6/topics/i18n/
@@ -154,3 +154,4 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.6/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = '/var/www/spearmint/'

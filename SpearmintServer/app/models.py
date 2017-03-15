@@ -116,7 +116,7 @@ class User(AbstractBaseUser):
         return self.is_admin
 
 class MongoDB(models.Model):
-    db_address = models.CharField(max_length=20, default='54.196.103.16')
-    username = models.CharField(max_length=20,default='user-mongo')
-    password = models.CharField(max_length=20, default='acil17')
+    db_address = models.CharField(max_length=50, default='spmint.chestimagingplatform.org')
+    username = models.CharField(max_length=20,default='')
+    password = models.CharField(max_length=20, default='')
 
