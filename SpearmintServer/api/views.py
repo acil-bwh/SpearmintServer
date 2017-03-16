@@ -31,13 +31,13 @@ def error_check(api):
 
 
 def get_db_uri():
-    datum=MongoDB.objects.get(pk=1)
+    datum=MongoDB.objects.first()
     db_uri = 'mongodb://' + datum.username + ':' + datum.password + '@' + datum.db_address + '/spearmint'
     return db_uri
 
 
 def get_db_address():
-    datum=MongoDB.objects.get(pk=1)
+    datum=MongoDB.objects.first()
     db_address = datum.db_address
     return db_address
 
