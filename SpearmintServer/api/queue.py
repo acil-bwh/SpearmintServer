@@ -1,16 +1,16 @@
 from .models import QueueItem
 
-def enqueue():
-    item = QueueItem.objects.create()
+def enqueue(queue_type='s'):
+    item = QueueItem.objects.create(item_type=queue_type)
     return item.id
 
-def peek(job_id, upto_first_n=1):
+def peek(queue_type,queue_id, upto_first_n=1):
     # check if job_id is one of the first N items from the head of queue
-    top_items = QueueItem.objects.order_by('pk')[:upto_first_n]
+    top_items = QueueItem.objects.filter(item_type=queue_type).order_by('pk')[:upto_first_n]
     for item in top_items:
-        if job_id == item.id:
+        if queue_id == item.id:
             return True
     return False
 
-def dequeue(job_id):
-    QueueItem.objects.get(pk=job_id).delete()
+def dequeue(queue_id):
+    QueueItem.objects.get(pk=queue_id).delete()

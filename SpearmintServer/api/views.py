@@ -57,6 +57,7 @@ def create_experiment(request):
     response_data = {'name': name, 'username': username}
     return response_data
 
+
 @login_required
 @error_check
 def find_experiment(request):
@@ -113,15 +114,15 @@ def get_suggestion(request):
     verbose = True
 
     # use queue for concurrency control
-    job_id = queue.enqueue()
+    queue_id = queue.enqueue('s')
     if verbose:
-        print '>>> enqueued job id = {0}'.format(job_id)
+        print '>>> enqueued queue id = {0}'.format(queue_id)
 
     time_limit = 60 * 60 * 2 # 2 hours in seconds
     total_elapsed = 0 # seconds
     interval = 5 # seconds
     while True:
-        if queue.peek(job_id, upto_first_n=1):
+        if queue.peek('s',queue_id, upto_first_n=1):
             start_time = time.time()
             params = spearmint.get_suggestion(username, name, db_uri)
             elapsed_time = time.time() - start_time
@@ -131,18 +132,60 @@ def get_suggestion(request):
                 response_data = {'name': name, 'params': params}
             else:
                 response_data = {'name': name, 'params': None}
-            queue.dequeue(job_id)
+            queue.dequeue(queue_id)
             if verbose:
-                print '<<< dequeued job id = {0}'.format(job_id)
+                print '<<< dequeued queue id = {0}'.format(queue_id)
             return response_data
         else:
             time.sleep(interval)
             total_elapsed += interval
             if verbose:
-                print '--- been waiting {0} sec for job_id = {1}'.format(total_elapsed, job_id)
+                print '--- been waiting {0} sec for queue_id = {1}'.format(total_elapsed, queue_id)
             if total_elapsed > time_limit:
-                queue.dequeue(job_id)
+                queue.dequeue(queue_id)
                 raise Exception('timed out while getting suggestion')
+
+@login_required
+@error_check
+def get_next_job_id(request):
+    name = request.GET['name']
+    username = request.user.username
+    db_uri = get_db_uri()
+    verbose = True
+
+    # use queue for concurrency control
+    queue_id = queue.enqueue('j')
+    if verbose:
+        print '>>> enqueued queue id = {0}'.format(queue_id)
+
+    time_limit = 60 * 3 # 3 minutes in seconds
+    total_elapsed = 0 # seconds
+    interval = 1 # seconds
+    while True:
+        if queue.peek('j',queue_id, upto_first_n=1):
+            start_time = time.time()
+            job_id = spearmint.get_next_job_id(username, name, db_uri)
+            elapsed_time = time.time() - start_time
+            if verbose:
+                print '*** took {0} sec. to get suggestion.'.format(elapsed_time)
+            if job_id:
+                response_data = {'name': name, 'job_id': job_id}
+            else:
+                response_data = {'name': name, 'job_id': None}
+            queue.dequeue(queue_id)
+            if verbose:
+                print '<<< dequeued queue id = {0}'.format(queue_id)
+            return response_data
+        else:
+            time.sleep(interval)
+            total_elapsed += interval
+            if verbose:
+                print '--- been waiting {0} sec for queue_id = {1}'.format(total_elapsed, queue_id)
+            if total_elapsed > time_limit:
+                queue.dequeue(queue_id)
+                raise Exception('timed out while getting suggestion')
+
+
 
 @csrf_exempt
 @login_required
