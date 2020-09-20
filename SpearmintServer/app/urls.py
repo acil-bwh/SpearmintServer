@@ -1,7 +1,7 @@
-from django.conf.urls import patterns, include, url
+from django.conf.urls import url
 from . import views
 
-urlpatterns = patterns('',
+urlpatterns = [
     url(r'^$', views.index, name='index'),
     url(r'^show/(?P<name>.+)/$', views.show, name='show'),
     url(r'^delete/(?P<name>.+)/$', views.delete, name='delete'),
@@ -10,4 +10,6 @@ urlpatterns = patterns('',
     url(r'^signup/$', views.signup, name='signup'),
     url(r'^token/$', views.token, name='token'),
     url(r'^message/$', views.message, name='message'),
-)
+]
+
+app_name = 'app'
