@@ -1,5 +1,6 @@
 import os
 from distutils.core import setup
+import setuptools
 
 # to recusively include all files under app templates and static
 app_data_dir = ['SpearmintServer/app/templates', 'SpearmintServer/app/static']
@@ -21,10 +22,10 @@ setup(name='SpearmintServer',
                 'SpearmintServer.api',
                ],
       package_data={'SpearmintServer.app': app_data_files},
-      install_requires=['Django==1.8.5',
-                        'MySQL-Python==1.2.5',
+      install_requires=['Django==2.2.16',
+                        'mysqlclient==2.0.1',
                         'python-dateutil>=1.5',
-                        'django-oauth-toolkit==0.9.0',
-                        'django-cors-headers==1.1.0',
+                        'django-oauth-toolkit==1.3.2',
+                        'django-cors-headers==3.5.0',
                        ],
      )
