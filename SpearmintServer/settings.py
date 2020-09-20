@@ -140,7 +140,7 @@ DATABASES = {
   'default': {
     'ENGINE': 'django.db.backends.mysql',
     'NAME': 'spearmintdb',
-    'HOST': '127.0.0.1',
+    'HOST': 'spearmintdb',
     'PORT': '3306',
     'USER': 'acil-user',
     'PASSWORD': get_secret('DATABASE_PASSWORD'),
