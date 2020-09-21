@@ -116,7 +116,7 @@ def get_suggestion(request):
     # use queue for concurrency control
     queue_id = queue.enqueue('s')
     if verbose:
-        print '>>> enqueued queue id = {0}'.format(queue_id)
+        print('>>> enqueued queue id = {0}'.format(queue_id))
 
     time_limit = 60 * 60 * 2 # 2 hours in seconds
     total_elapsed = 0 # seconds
@@ -127,20 +127,20 @@ def get_suggestion(request):
             params = spearmint.get_suggestion(username, name, db_uri)
             elapsed_time = time.time() - start_time
             if verbose:
-                print '*** took {0} sec. to get suggestion.'.format(elapsed_time)
+                print('*** took {0} sec. to get suggestion.'.format(elapsed_time))
             if params:
                 response_data = {'name': name, 'params': params}
             else:
                 response_data = {'name': name, 'params': None}
             queue.dequeue(queue_id)
             if verbose:
-                print '<<< dequeued queue id = {0}'.format(queue_id)
+                print('<<< dequeued queue id = {0}'.format(queue_id))
             return response_data
         else:
             time.sleep(interval)
             total_elapsed += interval
             if verbose:
-                print '--- been waiting {0} sec for queue_id = {1}'.format(total_elapsed, queue_id)
+                print('--- been waiting {0} sec for queue_id = {1}'.format(total_elapsed, queue_id))
             if total_elapsed > time_limit:
                 queue.dequeue(queue_id)
                 raise Exception('timed out while getting suggestion')
@@ -156,7 +156,7 @@ def get_next_job_id(request):
     # use queue for concurrency control
     queue_id = queue.enqueue('j')
     if verbose:
-        print '>>> enqueued queue id = {0}'.format(queue_id)
+        print('>>> enqueued queue id = {0}'.format(queue_id))
 
     time_limit = 60 * 3 # 3 minutes in seconds
     total_elapsed = 0 # seconds
@@ -167,20 +167,20 @@ def get_next_job_id(request):
             job_id = spearmint.get_next_job_id(username, name, db_uri)
             elapsed_time = time.time() - start_time
             if verbose:
-                print '*** took {0} sec. to get suggestion.'.format(elapsed_time)
+                print('*** took {0} sec. to get suggestion.'.format(elapsed_time))
             if job_id:
                 response_data = {'name': name, 'job_id': job_id}
             else:
                 response_data = {'name': name, 'job_id': None}
             queue.dequeue(queue_id)
             if verbose:
-                print '<<< dequeued queue id = {0}'.format(queue_id)
+                print('<<< dequeued queue id = {0}'.format(queue_id))
             return response_data
         else:
             time.sleep(interval)
             total_elapsed += interval
             if verbose:
-                print '--- been waiting {0} sec for queue_id = {1}'.format(total_elapsed, queue_id)
+                print('--- been waiting {0} sec for queue_id = {1}'.format(total_elapsed, queue_id))
             if total_elapsed > time_limit:
                 queue.dequeue(queue_id)
                 raise Exception('timed out while getting suggestion')
